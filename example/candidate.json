@@ -1,0 +1,312 @@
+{
+  "boundaries": [
+    {
+      "kind": "region",
+      "label": "Android 本机 Termux",
+      "wraps": [
+        "dshtool",
+        "pycore",
+        "fetchchain",
+        "domainpool",
+        "mediaparse",
+        "dlmerge",
+        "sdcard",
+        "localstate",
+        "webui"
+      ]
+    },
+    {
+      "kind": "region",
+      "label": "Edge 搜索面 Workers / Vercel / Netlify",
+      "wraps": [
+        "searchgal",
+        "galplatforms"
+      ]
+    }
+  ],
+  "cards": [
+    {
+      "dot": "cyan",
+      "items": [
+        "DSH 工具 adult_anime_dl 经 Node 插件 spawn Python，加 --json 回传 @@RESULT@@",
+        "Web 页调本机 HTTP /api/search、/api/download_cg、/api/status 轮询",
+        "SearchGal 对 /gal、/patch 做 POST 表单搜索，经 waitUntil 写 SSE 流"
+      ],
+      "title": "入口"
+    },
+    {
+      "dot": "emerald",
+      "items": [
+        "抓取按 requests → cloudscraper → curl → selenium 逐级降级",
+        "同 kind 域名做镜像替换，失败切下一个候选并记 domain-state",
+        "解析 mp4 直链与 m3u8，选画质；系列页发现同系列，CG 走画廊分支",
+        "ffmpeg 合并优先，失败降级原生断点续传；archive 做去重"
+      ],
+      "title": "关键链路"
+    },
+    {
+      "dot": "rose",
+      "items": [
+        "本机落盘 /sdcard/Download，状态在 ~/.dsh/adult-anime-dl 下",
+        "SearchGal 为独立部署，与下载器共享工作区但无调用关系",
+        "目标站点与 Gal 上游均为外部，跨边界只走 HTTPS"
+      ],
+      "title": "部署与边界"
+    }
+  ],
+  "components": [
+    {
+      "id": "user",
+      "label": "使用者",
+      "pos": [
+        40,
+        240
+      ],
+      "size": [
+        130,
+        64
+      ],
+      "sublabel": "Termux / 浏览器",
+      "type": "external"
+    },
+    {
+      "id": "webui",
+      "label": "Web 搜索页",
+      "pos": [
+        290,
+        240
+      ],
+      "size": [
+        140,
+        64
+      ],
+      "sublabel": "web/index.html",
+      "type": "frontend"
+    },
+    {
+      "id": "dshtool",
+      "label": "DSH Host 插件",
+      "pos": [
+        540,
+        80
+      ],
+      "size": [
+        150,
+        60
+      ],
+      "sublabel": "adult_anime_dl 工具",
+      "type": "backend"
+    },
+    {
+      "id": "pycore",
+      "label": "下载器主程序",
+      "pos": [
+        540,
+        240
+      ],
+      "size": [
+        150,
+        68
+      ],
+      "sublabel": "adult_anime_dl.py",
+      "type": "backend"
+    },
+    {
+      "id": "mediaparse",
+      "label": "媒体解析",
+      "pos": [
+        800,
+        240
+      ],
+      "size": [
+        140,
+        64
+      ],
+      "sublabel": "mp4 / m3u8 / 系列 / CG",
+      "type": "backend"
+    },
+    {
+      "id": "dlmerge",
+      "label": "下载合并",
+      "pos": [
+        1060,
+        240
+      ],
+      "size": [
+        140,
+        64
+      ],
+      "sublabel": "ffmpeg / 断点续传",
+      "type": "backend"
+    },
+    {
+      "id": "domainpool",
+      "label": "域名候选池",
+      "pos": [
+        290,
+        400
+      ],
+      "size": [
+        140,
+        60
+      ],
+      "sublabel": "SITE_POOL 同 kind 切换",
+      "type": "database"
+    },
+    {
+      "id": "fetchchain",
+      "label": "多级抓取链",
+      "pos": [
+        540,
+        400
+      ],
+      "size": [
+        150,
+        64
+      ],
+      "sublabel": "requests 逐级降级",
+      "type": "security"
+    },
+    {
+      "id": "targetsites",
+      "label": "目标站点群",
+      "pos": [
+        800,
+        400
+      ],
+      "size": [
+        140,
+        60
+      ],
+      "sublabel": "hanime1 / 同类站",
+      "type": "external"
+    },
+    {
+      "id": "sdcard",
+      "label": "本机存储",
+      "pos": [
+        1060,
+        400
+      ],
+      "size": [
+        140,
+        60
+      ],
+      "sublabel": "/sdcard/Download",
+      "type": "database"
+    },
+    {
+      "id": "localstate",
+      "label": "本地状态",
+      "pos": [
+        290,
+        560
+      ],
+      "size": [
+        140,
+        60
+      ],
+      "sublabel": "state / archive / 历史",
+      "type": "database"
+    },
+    {
+      "id": "searchgal",
+      "label": "SearchGal 聚合搜索",
+      "pos": [
+        540,
+        560
+      ],
+      "size": [
+        150,
+        64
+      ],
+      "sublabel": "/gal /patch SSE",
+      "type": "cloud"
+    },
+    {
+      "id": "galplatforms",
+      "label": "Gal / Patch 站点适配器",
+      "pos": [
+        800,
+        560
+      ],
+      "size": [
+        180,
+        64
+      ],
+      "sublabel": "30+ 平台并发搜索",
+      "type": "external"
+    }
+  ],
+  "connections": [
+    {
+      "from": "user",
+      "label": "搜索 / 下载操作",
+      "to": "webui"
+    },
+    {
+      "from": "webui",
+      "label": "HTTP /api/*",
+      "to": "pycore"
+    },
+    {
+      "from": "dshtool",
+      "label": "spawn --json",
+      "to": "pycore",
+      "variant": "emphasis"
+    },
+    {
+      "from": "pycore",
+      "label": "调度抓取",
+      "to": "fetchchain"
+    },
+    {
+      "from": "pycore",
+      "label": "镜像切换",
+      "to": "domainpool",
+      "variant": "dashed",
+      "fromSide": "bottom",
+      "toSide": "top"
+    },
+    {
+      "from": "fetchchain",
+      "label": "HTTPS 抓取",
+      "to": "targetsites"
+    },
+    {
+      "from": "targetsites",
+      "label": "HTML 回传",
+      "to": "mediaparse"
+    },
+    {
+      "from": "mediaparse",
+      "label": "媒体 URL 与画质",
+      "to": "dlmerge"
+    },
+    {
+      "from": "dlmerge",
+      "label": "mp4 落盘",
+      "to": "sdcard",
+      "variant": "emphasis"
+    },
+    {
+      "from": "domainpool",
+      "label": "持久化",
+      "to": "localstate"
+    },
+    {
+      "from": "searchgal",
+      "label": "并发搜索 SSE",
+      "to": "galplatforms"
+    }
+  ],
+  "diagram_type": "architecture",
+  "meta": {
+    "locale": "zh-CN",
+    "output": ".archify/architecture-dsh-overview-20261011-104943/overview.html",
+    "quality_profile": "showcase",
+    "subtitle": "adult-anime-dl 下载器与 SearchGal 聚合搜索",
+    "title": "dsh-hanime1 项目架构总览"
+  },
+  "schema_version": 1
+}

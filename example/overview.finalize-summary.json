@@ -1,0 +1,47 @@
+{
+  "schemaVersion": 1,
+  "ok": true,
+  "command": "finalize",
+  "status": "pass",
+  "type": "architecture",
+  "quality": "showcase",
+  "specification": {
+    "path": "/data/data/com.termux/files/home/dsh-hanime1/.archify/architecture-dsh-overview-20261011-104943/candidate.json",
+    "sha256": "1d3d48dc7ec32fe9a3147aae7196fcb83663f060d2f6c3a37369f42254125547",
+    "bytes": 6227
+  },
+  "artifact": {
+    "path": "/data/data/com.termux/files/home/dsh-hanime1/.archify/architecture-dsh-overview-20261011-104943/overview.html",
+    "sha256": "b9a814d7d7829d484974dfb70dc3bf46384c54662e1e729e800113d8542604ae",
+    "bytes": 769872
+  },
+  "gates": {
+    "validate": "pass",
+    "deliver": "pass",
+    "check": "pass",
+    "browser-check": "pass"
+  },
+  "diagnostics": [],
+  "diagnosticSummary": {
+    "total": 0,
+    "shown": 0,
+    "truncated": false
+  },
+  "evidence": {
+    "receipt": "/data/data/com.termux/files/home/dsh-hanime1/.archify/architecture-dsh-overview-20261011-104943/overview.finalize.json",
+    "summaryReceipt": "/data/data/com.termux/files/home/dsh-hanime1/.archify/architecture-dsh-overview-20261011-104943/overview.finalize-summary.json",
+    "browserCheckReceipt": "/data/data/com.termux/files/home/dsh-hanime1/.archify/architecture-dsh-overview-20261011-104943/overview.browser-check.json"
+  },
+  "update": {
+    "status": "current",
+    "installedVersion": "3.0.1",
+    "availableVersion": "3.0.1",
+    "releaseNotes": null,
+    "checkedAt": "2026-10-11T03:15:43.063Z",
+    "source": "cache",
+    "noticeRequired": false,
+    "noticeText": null
+  },
+  "visualReview": "not-requested",
+  "durationMs": 12463
+}
