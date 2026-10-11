@@ -28,11 +28,18 @@ archify 生成架构图时，最后一步 `finalize` 要靠系统的**硬链接*
 
 ## 怎么用（三步）
 
-1. 找到你机器上 archify 的位置，比如：
-   `/path/to/archify/bin/archify.mjs`
+1. `ARCHIFY_BIN` **现在可选**：不传时脚本会自动按优先级定位
+   （`require.resolve('@tt-a1i/archify-dsh')` → 扫 `~/.dsh/profiles` 树下的
+   archify.mjs → npm 全局）。只有在自动找不到时才需要手动设。
 2. 用本 skill 的包装脚本代替直接调 `node`：
 
 ```sh
+# 最简：完全不传 ARCHIFY_BIN，脚本自己找
+ARCHIFY_CHROME=/path/to/chrome-or-headless_shell \
+sh archify-nolink.sh finalize architecture candidate.json overview.html \
+  --quality showcase --json
+
+# 或显式指定（仍可用）
 ARCHIFY_BIN=/path/to/archify/bin/archify.mjs \
 ARCHIFY_CHROME=/path/to/chrome-or-headless_shell \
 sh archify-nolink.sh finalize architecture candidate.json overview.html \
