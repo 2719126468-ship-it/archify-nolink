@@ -1,3 +1,35 @@
+# archify-nolink（硬链接被禁时的 archify 运行补丁）
+
+> 中文完整说明见 [README.zh-CN.md](README.zh-CN.md)。English details below.
+
+一句话：**有些文件系统/手机环境禁止 `fs.linkSync`（硬链接），会导致 archify `finalize` 失败；这个 skill 用“复制代替硬链接 + 虚拟文件身份”绕过去，让 `finalize` 四道门（validate / deliver / check / browser-check）全部通过。**
+
+适用情况（命中一条就用它）：
+
+- `finalize` 报错 `EACCES: permission denied, link ...`
+- 报错 `candidate-publication-link-failed` / `output/target-indeterminate`
+- 报错 `previous-output-backup-finalization-failed` / `previous-output-identity-changed`
+- 在 Termux / Android（f2fs + SELinux `untrusted_app`）上跑 archify
+
+用法：
+
+```sh
+ARCHIFY_BIN=/path/to/archify/bin/archify.mjs \
+ARCHIFY_CHROME=/path/to/chrome-or-headless_shell \
+sh archify-nolink.sh finalize architecture candidate.json overview.html \
+  --quality showcase --json
+```
+
+文件一览：
+
+- `SKILL.md` — 给 agent 看的标准 skill 入口（何时用、怎么用）。
+- `nolink-preload.mjs` — Node 预加载补丁：`linkSync` 失败时自动改用复制，并伪造 `dev/ino/nlink` 让 archify 的文件身份检查继续通过。
+- `archify-nolink.sh` — 可移植包装脚本（自动把补丁通过 `NODE_OPTIONS` 传给 archify 及其子进程）。
+- `example/` — 一次真实跑通的例子（含全绿收据）。
+- `references/troubleshooting.md` — 修不好的时候再看的排障细节。
+
+---
+
 # archify-nolink skill
 
 Run [archify](https://github.com/) `finalize` on filesystems where `fs.linkSync`
@@ -42,6 +74,8 @@ version missed:
 3. `fstat` on an open binding fd must report the pinned group identity even
    after the names move (rename/unlink), otherwise the backup-final verify
    sees `identity-changed`.
+
+Details moved to [references/troubleshooting.md](references/troubleshooting.md).
 
 ## Example
 
